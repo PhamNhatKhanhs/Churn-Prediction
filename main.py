@@ -7,25 +7,40 @@ import mlflow # Import MLflow
 import mlflow.sklearn # Import MLflow scikit-learn integration
 
 # Add src directory to sys.path BEFORE importing from src
+# This needs to be robust
 sys.path.append(str(Path(__file__).resolve().parent / 'src'))
 
 from utils import load_config
 from data import make_dataset
 # Import the specific functions needed, including the new ones
-from models.train_model import load_processed_data, train_model_with_tuning
-from models.evaluate_model import evaluate_model_and_log
+# Import training and evaluation functions only when needed in their stages
+# from models.train_model import load_processed_data, train_model_with_tuning
+# from models.evaluate_model import evaluate_model_and_log
 
 def main():
     parser = argparse.ArgumentParser(description="Churn Prediction Project Pipeline")
     parser.add_argument(
         'stage',
-        choices=['preprocess', 'train', 'evaluate', 'full'], # Added 'full' pipeline
-        help='Pipeline stage to run (preprocess, train, evaluate, or full)'
+        # Add 'predict' to the choices
+        choices=['preprocess', 'train', 'evaluate', 'full', 'predict'],
+        help='Pipeline stage to run (preprocess, train, evaluate, full, or predict)'
     )
     parser.add_argument(
         '--config',
         default='config/config.yaml',
         help='Path to the configuration file (default: config/config.yaml)'
+    )
+    # Add arguments specific to the predict stage
+    parser.add_argument(
+        '--input-file',
+        type=str,
+        help='Path to the input CSV file for prediction (required for predict stage)'
+    )
+    parser.add_argument(
+        '--output-file',
+        type=str,
+        default='predictions.csv', # Default output filename
+        help='Path to save the prediction results CSV file (default: predictions.csv)'
     )
     args = parser.parse_args()
 
@@ -49,6 +64,10 @@ def main():
             sys.exit(1)
 
     if args.stage == 'train' or args.stage == 'full':
+        # Import training/evaluation functions only when needed
+        from models.train_model import load_processed_data, train_model_with_tuning
+        from models.evaluate_model import evaluate_model_and_log
+
         print("\n>>> Running Training Stage with MLflow Tracking <<<")
         try:
             # Set MLflow experiment name (will create if it doesn't exist)
@@ -94,11 +113,8 @@ def main():
                 # Log model and scaler as MLflow artifacts
                 print("Logging model and scaler as MLflow artifacts...")
                 mlflow.sklearn.log_model(trained_model, "model")
-                # Saving scaler as a generic artifact might be more robust if needed outside sklearn context
-                # Or use log_model if you always load it as a scikit-learn object
+                # Saving scaler as a generic artifact might be more robust
                 mlflow.log_artifact(config['artifacts']['scaler_save_path'], artifact_path="scaler")
-                # Alternatively, log the scaler object directly if always used with sklearn:
-                # mlflow.sklearn.log_model(fitted_scaler, "scaler")
 
                 # Log other artifacts (reports, plots)
                 print("Logging evaluation artifacts...")
@@ -121,14 +137,11 @@ def main():
         except Exception as e:
             print(f"Error during training/evaluation with MLflow: {e}")
             # Optionally log the error to the MLflow run before exiting
-            # mlflow.log_param("run_status", "failed")
-            # mlflow.log_param("error_message", str(e))
-            # if mlflow.active_run(): # Ensure run is active before setting status
+            # if mlflow.active_run():
             #     mlflow.end_run(status="FAILED")
             sys.exit(1)
 
-    # Note: An explicit 'evaluate' stage might load the *saved* model/scaler
-    # from a specific MLflow run ID for more controlled evaluation.
+    # Standalone evaluate stage (implementation still needed for loading from MLflow/local)
     elif args.stage == 'evaluate':
          print("\n>>> Running Standalone Evaluation Stage <<<")
          print("Standalone evaluation stage needs implementation (loading artifacts from MLflow or local path).")
@@ -138,6 +151,51 @@ def main():
          # ... load scaler, test data ...
          # evaluate_model.evaluate_model_and_log(...) # Use the logging version
 
+    # New Predict Stage
+    elif args.stage == 'predict':
+        print("\n>>> Running Prediction Stage <<<")
+        # Check if input file argument was provided
+        if not args.input_file:
+            print("Error: --input-file argument is required for the 'predict' stage.")
+            parser.print_help() # Show help message
+            sys.exit(1)
+
+        try:
+            # Import the prediction function only when needed
+            from models.predict_model import make_prediction
+
+            print(f"Attempting to make predictions on input file: {args.input_file}")
+            # Make predictions using the specified input file
+            prediction_results = make_prediction(
+                input_data=args.input_file, # Pass the input file path
+                config_path=args.config     # Pass the config file path
+            )
+
+            if prediction_results is not None:
+                # Save results to the specified output file
+                output_path = Path(args.output_file)
+                output_path.parent.mkdir(parents=True, exist_ok=True) # Ensure directory exists
+                prediction_results.to_csv(output_path, index=False)
+                print(f"Prediction results saved successfully to: {output_path}")
+                print(">>> Prediction Stage Completed <<<\n")
+            else:
+                # make_prediction function should have printed error details
+                print("Prediction process failed. Check logs above for details.")
+                print(">>> Prediction Stage Failed <<<\n")
+                sys.exit(1)
+
+        except ImportError:
+             print("Error: Could not import 'make_prediction' from models.predict_model.")
+             print("Please check the file structure and ensure the function exists.")
+             sys.exit(1)
+        except FileNotFoundError:
+             print(f"Error: Input file not found at {args.input_file}")
+             sys.exit(1)
+        except Exception as e:
+            print(f"An unexpected error occurred during the prediction stage: {e}")
+            sys.exit(1)
+
 
 if __name__ == '__main__':
     main()
+    
