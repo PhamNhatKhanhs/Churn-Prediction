@@ -3,9 +3,12 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV # Import GridSearchCV
+from sklearn.metrics import make_scorer, recall_score # Import scorers
 from pathlib import Path
 from typing import Tuple, Any
 import sys
+import time # Import time for tracking duration
 
 # Add src directory to sys.path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
@@ -26,11 +29,29 @@ def load_processed_data(config: dict) -> Tuple[pd.DataFrame, pd.Series, pd.DataF
     y_test = test_data['y']
 
     print("Processed data loaded successfully.")
-    return X_train, y_train, X_test, y_test # Returning test set as well for potential immediate evaluation
+    # Returning test set as well because main.py loads it here for evaluation later
+    return X_train, y_train, X_test, y_test
 
-def train_model(X_train: pd.DataFrame, y_train: pd.Series, config: dict) -> Tuple[Any, StandardScaler]:
-    """Scales data, trains the specified model, and saves model and scaler."""
-    print("Starting model training process...")
+# Function with Hyperparameter Tuning using GridSearchCV
+def train_model_with_tuning(X_train: pd.DataFrame, y_train: pd.Series, config: dict) -> Tuple[Any, StandardScaler, dict, float]:
+    """
+    Scales data, tunes hyperparameters using GridSearchCV for the specified model,
+    trains the best model on the full training data, and saves the best model and scaler.
+
+    Args:
+        X_train: Training features.
+        y_train: Training target.
+        config: Configuration dictionary.
+
+    Returns:
+        A tuple containing:
+            - best_model: The best estimator found by GridSearchCV, refit on the whole train set.
+            - scaler: The fitted StandardScaler object.
+            - best_params: The dictionary of best hyperparameters found.
+            - best_score: The best cross-validation score achieved (based on the specified scoring metric).
+    """
+    print("Starting model training and hyperparameter tuning process...")
+    start_time = time.time()
 
     # --- Scaling ---
     scaler = StandardScaler()
@@ -45,27 +66,92 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series, config: dict) -> Tupl
     X_train_scaled[numerical_cols] = scaler.transform(X_train[numerical_cols])
     print("Training data scaled.")
 
-    # --- Model Selection and Training ---
+    # --- Hyperparameter Tuning Setup ---
     model_name = config['model_selection']['name']
-    model_params = config['model_selection'][model_name]['params']
     random_state = config['random_state']
 
-    print(f"Training model: {model_name}")
-    if model_name == "LogisticRegression":
-        model = LogisticRegression(random_state=random_state, **model_params)
-    elif model_name == "RandomForestClassifier":
-        model = RandomForestClassifier(random_state=random_state, **model_params)
-    else:
-        raise ValueError(f"Unsupported model name: {model_name}")
+    # Define parameter grid (Example for RandomForestClassifier)
+    # You can move this grid definition to config.yaml for more flexibility
+    if model_name == "RandomForestClassifier":
+        print("Setting up parameter grid for RandomForestClassifier...")
+        param_grid = {
+            'n_estimators': [100, 150],             # Number of trees
+            'max_depth': [10, 20, None],            # Max depth of trees (None means unlimited)
+            'min_samples_split': [2, 5, 10],        # Min samples to split a node
+            'min_samples_leaf': [1, 3, 5],          # Min samples in a leaf node
+            'class_weight': ['balanced', None]      # Option to handle imbalance
+            # Add other parameters like 'criterion': ['gini', 'entropy'] if needed
+        }
+        estimator = RandomForestClassifier(random_state=random_state)
 
-    model.fit(X_train_scaled, y_train)
-    print("Model training complete.")
+    elif model_name == "LogisticRegression":
+        print("Setting up parameter grid for LogisticRegression...")
+        param_grid = {
+            'C': [0.1, 1.0, 10.0],                  # Inverse of regularization strength
+            'solver': ['liblinear', 'saga'],        # Solvers that support L1/L2
+            'penalty': ['l1', 'l2'],                # Regularization type
+            'class_weight': ['balanced', None]      # Option to handle imbalance
+        }
+        # Increase max_iter if solver='saga' might need more iterations
+        estimator = LogisticRegression(random_state=random_state, max_iter=config['model_selection']['LogisticRegression']['params'].get('max_iter', 1000))
+
+    else:
+        raise ValueError(f"Unsupported model name for tuning: {model_name}")
+
+    # Define the scoring metric for GridSearchCV
+    # Prioritizing Recall for the positive class (Churn=1)
+    # Other options: 'accuracy', 'precision', 'f1', 'roc_auc'
+    # Note: Use pos_label=1 because Churn 'Yes' was mapped to 1
+    scoring_metric = make_scorer(recall_score, pos_label=1)
+    scoring_name = 'recall_pos_label_1' # Name for logging
+    print(f"Using scoring metric for GridSearchCV: {scoring_name}")
+
+    # Initialize GridSearchCV
+    # cv=5 means 5-fold cross-validation
+    # n_jobs=-1 uses all available CPU cores
+    # verbose=2 provides more detailed output during tuning
+    grid_search = GridSearchCV(
+        estimator=estimator,
+        param_grid=param_grid,
+        scoring=scoring_metric,
+        cv=5,
+        n_jobs=-1,
+        verbose=2 # Increase verbosity
+    )
+
+    print("Starting GridSearchCV... This might take a while.")
+    grid_search_start_time = time.time()
+    # Fit GridSearchCV on the scaled training data
+    grid_search.fit(X_train_scaled, y_train)
+    grid_search_end_time = time.time()
+    print(f"GridSearchCV finished in {grid_search_end_time - grid_search_start_time:.2f} seconds.")
+
+    # Get the best results
+    best_params = grid_search.best_params_
+    best_score = grid_search.best_score_ # Mean cross-validated score of the best_estimator
+    best_model = grid_search.best_estimator_ # Estimator that was chosen by the search, fitted on the whole dataset
+
+    print(f"\nBest parameters found by GridSearchCV:")
+    print(best_params)
+    print(f"Best cross-validation score ({scoring_name}): {best_score:.4f}")
 
     # --- Save Artifacts ---
     model_save_path = Path(config['artifacts']['model_save_path'])
     scaler_save_path = Path(config['artifacts']['scaler_save_path'])
 
-    save_joblib(model, model_save_path)
+    print(f"\nSaving best model to {model_save_path}")
+    save_joblib(best_model, model_save_path) # Save the best model found
+    print(f"Saving scaler to {scaler_save_path}")
     save_joblib(scaler, scaler_save_path)
 
-    return model, scaler
+    end_time = time.time()
+    print(f"Training and tuning process completed in {end_time - start_time:.2f} seconds.")
+
+    # Return the necessary objects for evaluation and logging
+    return best_model, scaler, best_params, best_score
+
+# Keep the original train_model function for compatibility or remove if not needed
+# def train_model(X_train: pd.DataFrame, y_train: pd.Series, config: dict) -> Tuple[Any, StandardScaler]:
+#     """ (Original function without tuning) """
+#     # ... (original code) ...
+#     pass
