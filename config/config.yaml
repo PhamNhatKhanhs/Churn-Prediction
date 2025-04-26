@@ -33,6 +33,7 @@ model_selection:
       n_estimators: 100
       max_depth: null # Example, null means nodes expand until all leaves are pure
       min_samples_split: 2
+      class_weight: 'balanced'
       # Add other relevant hyperparameters
 
 artifacts:
