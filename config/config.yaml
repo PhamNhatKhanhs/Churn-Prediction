@@ -1,0 +1,47 @@
+# Configuration for the Churn Prediction Project
+
+project_name: "churn_prediction"
+random_state: 42 # For reproducibility
+
+data:
+  raw_path: "data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv"
+  processed_train_path: "data/processed/train.joblib" # Saving as joblib for convenience
+  processed_test_path: "data/processed/test.joblib"
+  target_column: "Churn"
+  test_size: 0.2
+
+features:
+  cols_to_drop: ["customerID"]
+  # Columns to encode using one-hot encoding (Object type excluding target)
+  # If empty, will try to auto-detect object columns (excluding target)
+  categorical_cols_ohe: []
+  # Original numerical columns that need scaling
+  numerical_cols_to_scale: ["tenure", "MonthlyCharges", "TotalCharges"]
+
+# Model selection: Choose 'LogisticRegression' or 'RandomForestClassifier'
+model_selection:
+  name: "RandomForestClassifier" # Or LogisticRegression
+
+  LogisticRegression:
+    params:
+      max_iter: 1000
+      C: 1.0 # Example hyperparameter
+      # Add other relevant hyperparameters
+
+  RandomForestClassifier:
+    params:
+      n_estimators: 100
+      max_depth: null # Example, null means nodes expand until all leaves are pure
+      min_samples_split: 2
+      # Add other relevant hyperparameters
+
+artifacts:
+  # Path to save trained model and scaler
+  model_save_path: "models/model.joblib"
+  scaler_save_path: "models/scaler.joblib"
+
+evaluation:
+  metrics_save_path: "reports/metrics/metrics.json"
+  report_save_path: "reports/metrics/classification_report.txt"
+  confusion_matrix_save_path: "reports/metrics/confusion_matrix.png"
+  feature_importance_save_path: "reports/figures/feature_importance.png" # Only for tree-based models
