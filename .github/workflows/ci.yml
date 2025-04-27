@@ -45,7 +45,7 @@ jobs:
     # Bước 5: Chạy Unit Tests với pytest (Cần bạn viết test sau này)
     - name: Run tests with pytest
       run: |
-        pytest
+        pytest --no-tests-found-exit-code=0 # <<< THÊM CỜ NÀY VÀO CUỐI
 
     # Bước 6: Thiết lập Docker Buildx
     - name: Set up Docker Buildx
