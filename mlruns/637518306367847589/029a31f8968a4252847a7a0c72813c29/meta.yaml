@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/029a31f8968a4252847a7a0c72813c29/artifacts
+end_time: 1745736937367
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: 029a31f8968a4252847a7a0c72813c29
+run_name: aged-shrew-901
+run_uuid: 029a31f8968a4252847a7a0c72813c29
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745736808951
+status: 3
+tags: []
+user_id: DELL

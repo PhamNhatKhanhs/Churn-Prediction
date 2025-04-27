@@ -7,3 +7,4 @@ PyYAML
 joblib
 pathlib
 mlflow 
+streamlit 
