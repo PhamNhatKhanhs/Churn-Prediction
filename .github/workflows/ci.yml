@@ -1,70 +1,64 @@
-    # Tên của workflow, hiển thị trên tab Actions của GitHub
-    name: Churn Prediction CI
+# Tên của workflow, hiển thị trên tab Actions của GitHub
+name: Churn Prediction CI
 
-    # Định nghĩa các sự kiện sẽ kích hoạt workflow này
-    on:
-      push: # Chạy khi có code được đẩy lên
-        branches: [ main ] # Chỉ chạy khi đẩy lên nhánh main
-      pull_request: # Chạy khi có pull request được mở hoặc cập nhật nhắm vào nhánh main
-        branches: [ main ]
-      workflow_dispatch: # Cho phép chạy thủ công từ giao diện GitHub Actions
+# Định nghĩa các sự kiện sẽ kích hoạt workflow này
+on:
+  push:
+    # --- SỬA Ở ĐÂY ---
+    branches: [ master ] # Chạy khi đẩy lên nhánh master
+    # --- KẾT THÚC SỬA ---
+  pull_request:
+    # --- SỬA Ở ĐÂY ---
+    branches: [ master ] # Chạy khi có pull request vào nhánh master
+    # --- KẾT THÚC SỬA ---
+  workflow_dispatch: # Cho phép chạy thủ công từ giao diện GitHub Actions
 
-    # Định nghĩa các công việc (jobs) sẽ chạy trong workflow
-    jobs:
-      build-and-test: # Tên của job (bạn có thể đặt tên khác)
-        runs-on: ubuntu-latest # Chạy trên máy ảo Ubuntu mới nhất do GitHub cung cấp
+# Định nghĩa các công việc (jobs) sẽ chạy trong workflow
+jobs:
+  build-and-test: # Tên của job (bạn có thể đặt tên khác)
+    runs-on: ubuntu-latest # Chạy trên máy ảo Ubuntu mới nhất do GitHub cung cấp
 
-        steps:
-        # Bước 1: Checkout code từ repository về máy ảo runner
-        - name: Checkout repository
-          uses: actions/checkout@v4 # Sử dụng action dựng sẵn của GitHub
+    steps:
+    # Bước 1: Checkout code từ repository về máy ảo runner
+    - name: Checkout repository
+      uses: actions/checkout@v4 # Sử dụng action dựng sẵn của GitHub
 
-        # Bước 2: Thiết lập môi trường Python
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: '3.11' # <<< QUAN TRỌNG: Đổi thành phiên bản Python bạn dùng trong venv
-            cache: 'pip' # Bật cache cho pip để tăng tốc cài đặt thư viện
+    # Bước 2: Thiết lập môi trường Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # <<< QUAN TRỌNG: Đổi thành phiên bản Python bạn dùng trong venv
+        cache: 'pip' # Bật cache cho pip để tăng tốc cài đặt thư viện
 
-        # Bước 3: Cài đặt các thư viện phụ thuộc
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install flake8 pytest # Cài đặt flake8 để lint và pytest để test
-            pip install -r requirements.txt # Cài đặt các thư viện của dự án
+    # Bước 3: Cài đặt các thư viện phụ thuộc
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest # Cài đặt flake8 để lint và pytest để test
+        pip install -r requirements.txt # Cài đặt các thư viện của dự án
 
-        # Bước 4: Lint code với flake8
-        # flake8 sẽ kiểm tra style code (PEP 8) và một số lỗi cú pháp cơ bản
-        # --count: Đếm số lỗi
-        # --select=E9,F63,F7,F82: Chỉ chọn các lỗi nghiêm trọng (syntax errors, undefined names)
-        # --show-source: Hiển thị dòng code gây lỗi
-        # --statistics: Đếm số lần xuất hiện của mỗi loại lỗi
-        # --exclude: Bỏ qua các thư mục không cần kiểm tra (ví dụ: venv)
-        - name: Lint with flake8
-          run: |
-            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv,.venv,__pycache__
+    # Bước 4: Lint code với flake8
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv,.venv,__pycache__
 
-        # Bước 5: Chạy Unit Tests với pytest (Cần bạn viết test sau này)
-        # Lệnh này sẽ tìm và chạy tất cả các file test theo quy ước của pytest (ví dụ: test_*.py)
-        # Hiện tại có thể sẽ không tìm thấy test nào nếu bạn chưa viết
-        - name: Run tests with pytest
-          run: |
-            pytest
+    # Bước 5: Chạy Unit Tests với pytest (Cần bạn viết test sau này)
+    - name: Run tests with pytest
+      run: |
+        pytest
 
-        # Bước 6: Thiết lập Docker Buildx (cần thiết để build image hiệu quả)
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
+    # Bước 6: Thiết lập Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-        # Bước 7: Build Docker image cho API
-        # Chỉ build, không push lên registry ở bước này
-        - name: Build Docker image
-          uses: docker/build-push-action@v5
-          with:
-            context: . # Build context là thư mục gốc dự án
-            file: ./Dockerfile # Đường dẫn tới Dockerfile
-            push: false # Chỉ build, không push
-            tags: churn-prediction-api-ci:latest # Đặt tag cho image (chỉ dùng trong quá trình build CI)
-            cache-from: type=gha # Sử dụng cache từ GitHub Actions (nếu có)
-            cache-to: type=gha,mode=max # Lưu cache lại GitHub Actions
+    # Bước 7: Build Docker image cho API
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: churn-prediction-api-ci:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
-    
