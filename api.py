@@ -55,6 +55,7 @@ SHAP_FEATURE_NAMES = None
 @app.on_event("startup")
 def load_model_artifacts_and_explainer():
     """Tải model, scaler, config, training columns VÀ tạo SHAP explainer."""
+    global MODEL, SCALER, TRAIN_COLUMNS, CONFIG, SHAP_EXPLAINER, SHAP_FEATURE_NAMES
     try:
         print("Đang tải cấu hình và artifacts...")
         CONFIG = load_config(Path(CONFIG_PATH))
@@ -194,7 +195,6 @@ async def predict_churn_and_explain(input_data: Union[CustomerData, List[Custome
     """
     Nhận dữ liệu khách hàng, trả về xác suất churn dự đoán VÀ giải thích SHAP.
     """
-    global MODEL, SCALER, TRAIN_COLUMNS, CONFIG, SHAP_EXPLAINER, SHAP_FEATURE_NAMES
 
     if not all([MODEL, SCALER, TRAIN_COLUMNS, CONFIG, SHAP_EXPLAINER, SHAP_FEATURE_NAMES]):
         raise HTTPException(status_code=503, detail="Lỗi: Mô hình, scaler, tên cột hoặc SHAP explainer chưa được tải.")
