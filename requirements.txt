@@ -7,4 +7,8 @@ PyYAML
 joblib
 pathlib
 mlflow 
-streamlit 
+streamlit
+fastapi
+uvicorn[standard] 
+pydantic 
+shap

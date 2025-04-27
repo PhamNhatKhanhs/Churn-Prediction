@@ -1,0 +1,62 @@
+# Môi trường ảo
+venv/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.eggs/
+*.egg-info/
+dist/
+build/
+wheels/
+*.tar.gz
+*.whl
+
+# Databases
+*.db
+*.sqlite3
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Log files and temporary files
+*.log
+*.tmp
+*.swp
+
+# Airflow specific (nếu bạn có thư mục airflow_setup lồng vào)
+# airflow_setup/
+
+# MLflow specific
+mlruns/
+.mlflow-ignore
+
+# Data (Tùy chọn - Nếu không muốn đưa data vào image)
+# data/raw/*
+# data/processed/*
+# !data/raw/.gitkeep
+# !data/processed/.gitkeep
+
+# Predictions output
+*.csv
+
+# Git files
+.git/
+.gitignore
+
+# Docker files (không cần copy chính nó)
+Dockerfile
+docker-compose.yaml
+.dockerignore
+
