@@ -45,7 +45,15 @@ jobs:
     # Bước 5: Chạy Unit Tests với pytest (Cần bạn viết test sau này)
     - name: Run tests with pytest
       run: |
-        pytest --no-tests-found-exit-code=0 # <<< THÊM CỜ NÀY VÀO CUỐI
+        pytest
+        exit_code=$?
+        if [ $exit_code -eq 5 ]; then
+          echo "Pytest exited with code 5 (No tests found), considering it a success."
+          exit 0
+        else
+          echo "Pytest exited with code $exit_code."
+          exit $exit_code
+        fi
 
     # Bước 6: Thiết lập Docker Buildx
     - name: Set up Docker Buildx
