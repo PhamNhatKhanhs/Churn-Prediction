@@ -55,7 +55,6 @@ SHAP_FEATURE_NAMES = None
 @app.on_event("startup")
 def load_model_artifacts_and_explainer():
     """Tải model, scaler, config, training columns VÀ tạo SHAP explainer."""
-    global MODEL, SCALER, TRAIN_COLUMNS, CONFIG, SHAP_EXPLAINER, SHAP_FEATURE_NAMES
     try:
         print("Đang tải cấu hình và artifacts...")
         CONFIG = load_config(Path(CONFIG_PATH))
