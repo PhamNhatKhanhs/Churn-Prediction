@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/ca75e2493bdb4b2b9e9a3899e9b14c52/artifacts
+end_time: 1745822916942
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: ca75e2493bdb4b2b9e9a3899e9b14c52
+run_name: delicate-fowl-670
+run_uuid: ca75e2493bdb4b2b9e9a3899e9b14c52
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745822798738
+status: 3
+tags: []
+user_id: DELL

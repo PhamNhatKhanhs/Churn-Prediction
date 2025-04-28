@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/a67edb7a04bf466faf27fcfb3d784dc7/artifacts
+end_time: 1745827626341
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: a67edb7a04bf466faf27fcfb3d784dc7
+run_name: wise-bird-607
+run_uuid: a67edb7a04bf466faf27fcfb3d784dc7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745827561568
+status: 3
+tags: []
+user_id: DELL
