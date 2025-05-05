@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/1e1da9f16bb54d45a4fcf34106500df2/artifacts
+end_time: 1746431198252
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: 1e1da9f16bb54d45a4fcf34106500df2
+run_name: adorable-mouse-697
+run_uuid: 1e1da9f16bb54d45a4fcf34106500df2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746431147649
+status: 3
+tags: []
+user_id: DELL
