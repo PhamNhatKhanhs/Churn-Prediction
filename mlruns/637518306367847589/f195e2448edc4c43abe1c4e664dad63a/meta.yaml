@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/f195e2448edc4c43abe1c4e664dad63a/artifacts
+end_time: 1746427713997
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: f195e2448edc4c43abe1c4e664dad63a
+run_name: monumental-fly-115
+run_uuid: f195e2448edc4c43abe1c4e664dad63a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746427592620
+status: 3
+tags: []
+user_id: DELL

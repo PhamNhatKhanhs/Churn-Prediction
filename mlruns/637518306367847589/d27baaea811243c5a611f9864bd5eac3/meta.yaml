@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/churn_prediction_project/mlruns/637518306367847589/d27baaea811243c5a611f9864bd5eac3/artifacts
+end_time: 1745909333620
+entry_point_name: ''
+experiment_id: '637518306367847589'
+lifecycle_stage: active
+run_id: d27baaea811243c5a611f9864bd5eac3
+run_name: rebellious-sponge-42
+run_uuid: d27baaea811243c5a611f9864bd5eac3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745909199864
+status: 3
+tags: []
+user_id: DELL

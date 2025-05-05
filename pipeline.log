@@ -1295,3 +1295,1291 @@ MLflow Run ca75e2493bdb4b2b9e9a3899e9b14c52 finished successfully.
 [CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.5s
 [CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.0s
 [CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.4s
+D:\churn_prediction_project\src\models\evaluate_model.py:150: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x='Importance', y='Feature', data=feature_importance_df.head(20), ax=ax_fi, palette='viridis') # Top 20
+2025/04/29 13:48:53 WARNING mlflow.models.model: Model logged without a signature and input example. Please set `input_example` parameter when logging the model to auto infer the model signature.
+Configuration loaded from config\config.yaml
+
+>>> Running Preprocessing Stage <<<
+Loading raw data from: data\raw\WA_Fn-UseC_-Telco-Customer-Churn.csv
+Raw data loaded successfully.
+Starting data preprocessing...
+Dropped columns: ['customerID']
+Handling missing values...
+Filled 11 NaN values in TotalCharges with 0.
+Encoding categorical features...
+Auto-detected categorical columns for OHE: ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod']
+Target variable 'Churn' mapped to 0/1.
+Applied One-Hot Encoding to: ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod']
+Preprocessing finished.
+Splitting data into train and test sets...
+Train set shape: (5634, 30), Test set shape: (1409, 30)
+Object saved to data\processed\train.joblib
+Object saved to data\processed\test.joblib
+Train data saved to data\processed\train.joblib
+Test data saved to data\processed\test.joblib
+>>> Preprocessing Stage Completed <<<
+
+
+>>> Running Training Stage with MLflow Tracking <<<
+MLflow experiment set to: 'Churn Prediction Experiments'
+Started MLflow run with ID: d27baaea811243c5a611f9864bd5eac3
+Logging parameters to MLflow...
+Loading processed data...
+Loading processed data from data\processed\train.joblib and data\processed\test.joblib
+Object loaded from data\processed\train.joblib
+Object loaded from data\processed\test.joblib
+Processed data loaded successfully.
+Starting training and hyperparameter tuning...
+Starting model training and hyperparameter tuning process...
+Scaling numerical features: ['tenure', 'MonthlyCharges', 'TotalCharges']
+Training data scaled.
+Setting up parameter grid for RandomForestClassifier...
+Using scoring metric for GridSearchCV: recall_pos_label_1
+Starting GridSearchCV... This might take a while.
+Fitting 5 folds for each of 108 candidates, totalling 540 fits
+GridSearchCV finished in 112.60 seconds.
+
+Best parameters found by GridSearchCV:
+{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 2, 'n_estimators': 150}
+Best cross-validation score (recall_pos_label_1): 0.7472
+
+Saving best model to models\model.joblib
+Object saved to models\model.joblib
+Saving scaler to models\scaler.joblib
+Object saved to models\scaler.joblib
+Training and tuning process completed in 112.69 seconds.
+>>> Training and Tuning Stage Completed <<<
+
+Logging best parameters and CV score...
+
+>>> Running Evaluation Stage (Post-Training) <<<
+Starting model evaluation...
+Test data scaled for columns: ['tenure', 'MonthlyCharges', 'TotalCharges'].
+Making predictions on test data...
+Predictions made.
+Calculating evaluation metrics...
+Calculated evaluation metrics:
+  accuracy: 0.7651
+  precision: 0.5402
+  recall: 0.7727
+  f1_score: 0.6359
+  roc_auc: 0.8448
+Metrics logged to MLflow.
+
+Generating classification report...
+Classification Report generated.
+              precision    recall  f1-score   support
+
+   Not Churn       0.90      0.76      0.83      1035
+       Churn       0.54      0.77      0.64       374
+
+    accuracy                           0.77      1409
+   macro avg       0.72      0.77      0.73      1409
+weighted avg       0.81      0.77      0.78      1409
+
+
+Generating confusion matrix...
+Confusion Matrix generated.
+[[789 246]
+ [ 85 289]]
+
+Saving evaluation artifacts locally...
+Metrics saved to reports\metrics\metrics.json
+Report saved to reports\metrics\classification_report.txt
+Confusion matrix plot saved to reports\metrics\confusion_matrix.png
+Generating and saving feature importance plot...
+Feature importance plot saved to reports\figures\feature_importance.png
+Evaluation artifacts saved locally.
+>>> Evaluation Stage Completed <<<
+
+Logging model and scaler as MLflow artifacts...
+Logging evaluation artifacts...
+MLflow Run d27baaea811243c5a611f9864bd5eac3 finished successfully.
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   3.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   3.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   3.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   3.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   3.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.5s
+D:\churn_prediction_project\src\models\evaluate_model.py:150: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x='Importance', y='Feature', data=feature_importance_df.head(20), ax=ax_fi, palette='viridis') # Top 20
+2025/05/05 13:48:33 WARNING mlflow.models.model: Model logged without a signature and input example. Please set `input_example` parameter when logging the model to auto infer the model signature.
+Configuration loaded from config\config.yaml
+
+>>> Running Preprocessing Stage <<<
+Loading raw data from: data\raw\WA_Fn-UseC_-Telco-Customer-Churn.csv
+Raw data loaded successfully.
+Starting data preprocessing...
+Dropped columns: ['customerID']
+Handling missing values...
+Filled 11 NaN values in TotalCharges with 0.
+Encoding categorical features...
+Auto-detected categorical columns for OHE: ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod']
+Target variable 'Churn' mapped to 0/1.
+Applied One-Hot Encoding to: ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod']
+Preprocessing finished.
+Splitting data into train and test sets...
+Train set shape: (5634, 30), Test set shape: (1409, 30)
+Object saved to data\processed\train.joblib
+Object saved to data\processed\test.joblib
+Train data saved to data\processed\train.joblib
+Test data saved to data\processed\test.joblib
+>>> Preprocessing Stage Completed <<<
+
+
+>>> Running Training Stage with MLflow Tracking <<<
+MLflow experiment set to: 'Churn Prediction Experiments'
+Started MLflow run with ID: f195e2448edc4c43abe1c4e664dad63a
+Logging parameters to MLflow...
+Loading processed data...
+Loading processed data from data\processed\train.joblib and data\processed\test.joblib
+Object loaded from data\processed\train.joblib
+Object loaded from data\processed\test.joblib
+Processed data loaded successfully.
+Starting training and hyperparameter tuning...
+Starting model training and hyperparameter tuning process...
+Scaling numerical features: ['tenure', 'MonthlyCharges', 'TotalCharges']
+Training data scaled.
+Setting up parameter grid for RandomForestClassifier...
+Using scoring metric for GridSearchCV: recall_pos_label_1
+Starting GridSearchCV... This might take a while.
+Fitting 5 folds for each of 108 candidates, totalling 540 fits
+GridSearchCV finished in 103.71 seconds.
+
+Best parameters found by GridSearchCV:
+{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 2, 'n_estimators': 150}
+Best cross-validation score (recall_pos_label_1): 0.7472
+
+Saving best model to models\model.joblib
+Object saved to models\model.joblib
+Saving scaler to models\scaler.joblib
+Object saved to models\scaler.joblib
+Training and tuning process completed in 103.83 seconds.
+>>> Training and Tuning Stage Completed <<<
+
+Logging best parameters and CV score...
+
+>>> Running Evaluation Stage (Post-Training) <<<
+Starting model evaluation...
+Test data scaled for columns: ['tenure', 'MonthlyCharges', 'TotalCharges'].
+Making predictions on test data...
+Predictions made.
+Calculating evaluation metrics...
+Calculated evaluation metrics:
+  accuracy: 0.7651
+  precision: 0.5402
+  recall: 0.7727
+  f1_score: 0.6359
+  roc_auc: 0.8448
+Metrics logged to MLflow.
+
+Generating classification report...
+Classification Report generated.
+              precision    recall  f1-score   support
+
+   Not Churn       0.90      0.76      0.83      1035
+       Churn       0.54      0.77      0.64       374
+
+    accuracy                           0.77      1409
+   macro avg       0.72      0.77      0.73      1409
+weighted avg       0.81      0.77      0.78      1409
+
+
+Generating confusion matrix...
+Confusion Matrix generated.
+[[789 246]
+ [ 85 289]]
+
+Saving evaluation artifacts locally...
+Metrics saved to reports\metrics\metrics.json
+Report saved to reports\metrics\classification_report.txt
+Confusion matrix plot saved to reports\metrics\confusion_matrix.png
+Generating and saving feature importance plot...
+Feature importance plot saved to reports\figures\feature_importance.png
+Evaluation artifacts saved locally.
+>>> Evaluation Stage Completed <<<
+
+Logging model and scaler as MLflow artifacts...
+Logging evaluation artifacts...
+MLflow Run f195e2448edc4c43abe1c4e664dad63a finished successfully.
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   3.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   4.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   3.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   4.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.0s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.5s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.7s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.4s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.1s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=150; total time=   3.1s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.8s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   2.2s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   1.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.2s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.8s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   3.3s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.7s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=balanced, max_depth=20, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   2.2s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   3.7s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.1s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.4s
+[CV] END class_weight=balanced, max_depth=None, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=2, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.3s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=2, n_estimators=150; total time=   1.8s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=2, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=5, n_estimators=100; total time=   1.2s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=100; total time=   0.9s
+[CV] END class_weight=None, max_depth=10, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   2.3s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=2, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=5, n_estimators=150; total time=   2.5s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=3, min_samples_split=10, n_estimators=150; total time=   3.0s
+[CV] END class_weight=None, max_depth=20, min_samples_leaf=5, min_samples_split=5, n_estimators=150; total time=   2.0s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100; total time=   1.6s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=1, min_samples_split=10, n_estimators=150; total time=   2.1s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=5, n_estimators=100; total time=   1.5s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=3, min_samples_split=10, n_estimators=100; total time=   1.9s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=2, n_estimators=150; total time=   3.4s
+[CV] END class_weight=None, max_depth=None, min_samples_leaf=5, min_samples_split=10, n_estimators=150; total time=   1.8s
